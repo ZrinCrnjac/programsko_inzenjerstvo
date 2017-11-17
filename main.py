@@ -3,22 +3,28 @@ import random
 from classes.course import Course
 from classes.student import Student
 
-with open("courses.txt", "r") as f:
-    lines = f.readlines()
+def get_courses_from_file(filename):
+    with open(filename, "r") as f:
+        lines = f.readlines()
 
-data = []
-for a in lines:
-    if not a.startswith("#"):
-        data.append(a.strip())
+    data = []
+    for a in lines:
+        if not a.startswith("#"):
+            data.append(a.strip())
 
-courses = []
+    courses = []
 
-for line in data:
-    x = line.split(" | ")
-    if "Course" in x[0]:
-        courses.append(Course(x[1], x[2]))
-    elif "Running" in x[0]:
-        courses[-1].add_running(int(x[1]))
+    for line in data:
+        x = line.split(" | ")
+        if "Course" in x[0]:
+            courses.append(Course(x[1], x[2]))
+        elif "Running" in x[0]:
+            courses[-1].add_running(int(x[1]))
+    return courses
 
-for nesto in courses:
-    print nesto
+
+if __name__ == "__main__":
+    courses = get_courses_from_file("courses.txt")
+
+    for nesto in courses:
+        print nesto
