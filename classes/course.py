@@ -9,6 +9,26 @@ class Course:
         self.runnings.append(CourseRunning(self, year))
         return self.runnings[-1]
 
+    @classmethod
+    def get_courses_from_file(self, filename):
+        with open(filename, "r") as f:
+            lines = f.readlines()
+
+        data = []
+        for a in lines:
+            if not a.startswith("#"):
+                data.append(a.strip())
+
+        courses = []
+
+        for line in data:
+            x = line.split(" | ")
+            if "Course" in x[0]:
+                courses.append(Course(x[1], x[2]))
+            elif "Running" in x[0]:
+                courses[-1].add_running(int(x[1]))
+        return courses
+
 class CourseRunning:
     def __init__(self, course, year):
         self.course = course
@@ -22,22 +42,3 @@ class CourseRunning:
     def print_students(self):
         """Ispisuje na ekran imena studenata upisanih u course"""
         pass
-
-def get_courses_from_file(filename):
-    with open(filename, "r") as f:
-        lines = f.readlines()
-
-    data = []
-    for a in lines:
-        if not a.startswith("#"):
-            data.append(a.strip())
-
-    courses = []
-
-    for line in data:
-        x = line.split(" | ")
-        if "Course" in x[0]:
-            courses.append(Course(x[1], x[2]))
-        elif "Running" in x[0]:
-            courses[-1].add_running(int(x[1]))
-    return courses
